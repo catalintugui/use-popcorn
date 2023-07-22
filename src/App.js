@@ -55,18 +55,18 @@ export default function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar movies={movies} />
       <Main movies={movies} />
     </>
   );
 }
 
-function Navbar() {
+function Navbar({ movies }) {
   return (
     <nav className="nav-bar">
       <Logo />
       <Search />
-      <Results />
+      <Results movies={movies} />
     </nav>
   );
 }
@@ -94,10 +94,10 @@ function Logo() {
   );
 }
 
-function Results() {
+function Results({ movies }) {
   return (
     <p className="num-results">
-      Found <strong>X</strong> results
+      Found <strong>{movies.length}</strong> results
     </p>
   );
 }
