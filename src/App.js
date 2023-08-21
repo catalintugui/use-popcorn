@@ -61,7 +61,11 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(null);
 
   function handleSelectMovie(id) {
-    setSelectedId(id);
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleCloseSelectMovie() {
+    setSelectedId(null);
   }
 
   useEffect(
@@ -124,7 +128,10 @@ export default function App() {
         </Box>
         <Box>
           {selectedId ? (
-            <MovieDetails selectedId={selectedId} />
+            <MovieDetails
+              selectedId={selectedId}
+              onCloseSelectMovie={handleCloseSelectMovie}
+            />
           ) : (
             <>
               <Sumarry watched={watched} />
@@ -209,7 +216,7 @@ function Box({ children }) {
 
 function MoviesList({ movies, onSelectMovie }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
         <Movie movie={movie} key={movie.imdbID} onSelectMovie={onSelectMovie} />
       ))}
@@ -262,8 +269,15 @@ function Sumarry({ watched }) {
   );
 }
 
-function MovieDetails({ selectedId }) {
-  return <div className="details">{selectedId}</div>;
+function MovieDetails({ selectedId, onCloseSelectMovie }) {
+  return (
+    <div className="details">
+      <button className="btn-back" onClick={onCloseSelectMovie}>
+        &larr;
+      </button>
+      {selectedId}
+    </div>
+  );
 }
 
 function WatchedMoviesList({ watched }) {
