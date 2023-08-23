@@ -137,6 +137,7 @@ export default function App() {
               selectedId={selectedId}
               onCloseSelectMovie={handleCloseSelectMovie}
               onAddWatched={handleWatchedMovie}
+              watched={watched}
             />
           ) : (
             <>
@@ -275,10 +276,20 @@ function Sumarry({ watched }) {
   );
 }
 
-function MovieDetails({ selectedId, onCloseSelectMovie, onAddWatched }) {
+function MovieDetails({
+  selectedId,
+  onCloseSelectMovie,
+  onAddWatched,
+  watched,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
+
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -349,12 +360,22 @@ function MovieDetails({ selectedId, onCloseSelectMovie, onAddWatched }) {
           </header>
           <section>
             <div className="rating">
-              <Rating maxRating={10} size={24} onSetRating={setUserRating} />
+              {!isWatched ? (
+                <>
+                  <Rating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
 
-              {userRating > 0 && (
-                <button className="btn-add" onClick={handleAdd}>
-                  Add movie
-                </button>
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      Add movie
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>You already rated this movie {watchedUserRating}⭐️</p>
               )}
             </div>
             <p>
