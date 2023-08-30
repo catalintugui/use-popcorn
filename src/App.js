@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { useKey } from "./useKey";
 import Rating from "./Rating";
 
 const average = (arr) =>
@@ -311,22 +312,24 @@ function MovieDetails({
     Genre: genre,
   } = movie;
 
-  useEffect(
-    function () {
-      function eventCallback(e) {
-        if (e.code === "Escape") {
-          onCloseSelectMovie();
-        }
-      }
+  useKey("Escape", onCloseSelectMovie);
 
-      document.addEventListener("keydown", eventCallback);
+  // useEffect(
+  //   function () {
+  //     function eventCallback(e) {
+  //       if (e.code === "Escape") {
+  //         onCloseSelectMovie();
+  //       }
+  //     }
 
-      return function () {
-        document.removeEventListener("keydown", eventCallback);
-      };
-    },
-    [onCloseSelectMovie]
-  );
+  //     document.addEventListener("keydown", eventCallback);
+
+  //     return function () {
+  //       document.removeEventListener("keydown", eventCallback);
+  //     };
+  //   },
+  //   [onCloseSelectMovie]
+  // );
 
   useEffect(
     function () {
